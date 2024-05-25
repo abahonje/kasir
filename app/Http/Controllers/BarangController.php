@@ -39,15 +39,46 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nama_barang' => 'required',
+            'jenis_id' => 'required',
+            'harga' => 'required',
+            'ukuran' => 'required',
+            'stok' => 'required',
+            'deskripsi' => 'required',
+            'photo' => 'nullable|image'
+        ], [
+            'nama_barang' => 'Nama barang harus diisi',
+            'jenis_id' => 'Jenis barang harus dipilih',
+            'harga' => 'Harga barang harus diisi',
+            'ukuran' => 'Ukuran barang harus diisi',
+            'stok' => 'Stok barang harus diisi',
+            'deskripsi' => 'Deskripsi barang harus diisi',
+            'photo' => 'Photo harus merupakan gambar',
+        ]);
+
+        if($request->file('photo')){
+            $filename = $request->file('photo')->hashName();
+            $request->file('photo')->storeAs('produk', $filename);
+            $validatedData['photo'] = $filename;
+        }
+
+        $validatedData['user_id'] = auth()->user()->id;
+
+        Barang::create($validatedData);
+        return redirect('/barang')->with('info', 'Data barang baru berhasil ditambahkan ke dalam database');
+
+
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Barang $barang)
+    public function show(Request $request)
     {
-        //
+        $barang = Barang::find($request->id);
+        return $barang->toJson();
     }
 
     /**

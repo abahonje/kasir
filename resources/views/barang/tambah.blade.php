@@ -6,7 +6,7 @@
         <h5><i class="fas fa-file"></i> Form Tambah Data Barang</h5>
     </div>
     <div class="card-body">
-        <form action="/barang" method="post">
+        <form action="/barang" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-7">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -93,7 +93,12 @@
                             <img src="/img/upload.jpg" class="img-preview cursor-pointer" style="height: 250px; width: 250px; object-fit:cover" role="button">
                         </div>
                     </div>
-                    <input class="form-control" type="file" name="photo" id="photo" onchange="previewImg()" hidden>
+                    <input class="form-control @error('photo') is-invalid @enderror" type="file" name="photo" id="photo" onchange="previewImg()" hidden>
+                    @error('photo')
+                        <div class="invalid-feedback text-center">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
             </div>
         </form>

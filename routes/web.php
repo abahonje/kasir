@@ -47,3 +47,5 @@ Route::delete('/jenis', [JenisController::class, 'destroy'])->middleware(['auth'
 // Pengelolaan Barang
 Route::get('/barang', [BarangController::class, 'index'])->middleware(['auth', 'isadmin']);
 Route::get('/barang/create', [BarangController::class, 'create'])->middleware(['auth', 'isadmin']);
+Route::post('/barang', [BarangController::class, 'store'])->middleware(['auth', 'isadmin']);
+Route::post('/getbarang', [BarangController::class, 'show'])->middleware(['auth', 'isadmin']);
